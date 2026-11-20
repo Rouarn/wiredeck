@@ -64,9 +64,12 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+/* 字体只保留开屏用到的字符（ASCII 可打印字符 + · 等标点）和 400–700 字重，
+   整包不再携带约 640 KB 的完整字体。开屏文案若新增其它字符，需重新子集化，
+   否则缺失字符会回退到后面的系统字体。 */
 @font-face {
   font-family: 'Archivo Splash';
-  src: url('../assets/splash/Archivo.ttf') format('truetype');
+  src: url('../assets/splash/Archivo-splash.woff2') format('woff2');
   font-weight: 400 700;
   font-display: swap;
 }
