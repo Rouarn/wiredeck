@@ -108,7 +108,7 @@ Wails v2（系统 WebView）+ Go 后端 + Vue 3 + TypeScript + Vite + Pinia + Na
 
 ## 状态
 
-v1.0.2 已发布（新增启动开屏动画）。macOS（Apple Silicon）为正式支持平台；Windows 10/11 x64 提供实验性构建（随 Release 一起发布，未充分验证）。
+v1.0.3 已发布（开屏按启动就绪收起、可跳过开屏，字体子集化减小包体）。macOS（Apple Silicon）为正式支持平台；Windows 10/11 x64 提供实验性构建（随 Release 一起发布，未充分验证）。
 
 ## 许可证
 
