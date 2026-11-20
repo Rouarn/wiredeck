@@ -8,15 +8,17 @@ import {
   GetHostIdentity,
   OpenExternal,
 } from '../../wailsjs/go/main/App'
-import { NButton, useDialog, useMessage } from 'naive-ui'
+import { NButton, NSwitch, useDialog, useMessage } from 'naive-ui'
 import type { model } from '../../wailsjs/go/models'
 import SegmentedControl from '../components/SegmentedControl.vue'
+import { useSplashStore } from '../stores/splash'
 import { useThemeStore } from '../stores/theme'
 import { useDevicesStore } from '../stores/devices'
 import type { ThemeMode } from '../stores/theme'
 import { t, useLang, type Lang } from '../i18n'
 
 const theme = useThemeStore()
+const splash = useSplashStore()
 const devices = useDevicesStore()
 const dialog = useDialog()
 const identity = ref<model.HostIdentity | null>(null)
@@ -147,6 +149,19 @@ async function openUpdate() {
       </div>
       <div class="panel-body">
         <SegmentedControl :options="themeOptions" :value="theme.mode" @update:value="onChange" />
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h3>{{ t('settings.splash') }}</h3>
+        <span class="hint">{{ t('settings.splashHint') }}</span>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <span class="label">{{ t('settings.splashSkip') }}</span>
+          <NSwitch :value="splash.skip" @update:value="splash.setSkip" />
+        </div>
       </div>
     </section>
 

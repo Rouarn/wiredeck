@@ -4,9 +4,11 @@ import { NConfigProvider, NDialogProvider, NMessageProvider, darkTheme, zhCN, da
 import type { GlobalThemeOverrides } from 'naive-ui'
 import AppLayout from './layouts/AppLayout.vue'
 import LaunchSplash from './components/LaunchSplash.vue'
+import { useSplashStore } from './stores/splash'
 import { useThemeStore } from './stores/theme'
 
 const theme = useThemeStore()
+const splash = useSplashStore()
 theme.init()
 
 const naiveTheme = computed(() => (theme.isDark ? darkTheme : null))
@@ -38,5 +40,5 @@ const overrides = computed<GlobalThemeOverrides>(() => ({
     </NMessageProvider>
   </NConfigProvider>
 
-  <LaunchSplash />
+  <LaunchSplash v-if="!splash.skip" />
 </template>
