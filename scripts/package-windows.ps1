@@ -1,4 +1,4 @@
-# WireDeck Windows 便携包组装：wails build → 内置 adb/aapt2/scrcpy → zip
+﻿# WireDeck Windows 便携包组装：wails build → 内置 adb/aapt2/scrcpy → zip
 # 与 .github/workflows/ci.yml 的 build-windows job 保持一致，供 scripts/ship.sh --win32 调用。
 # 用法: powershell -ExecutionPolicy Bypass -File Scripts\package-windows.ps1 [-TempRoot D:\Dev\cache\temp]
 param(
