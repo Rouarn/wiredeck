@@ -1,31 +1,54 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { t } from '../i18n'
+import { useDevicesStore } from '../stores/devices'
 import { useThemeStore } from '../stores/theme'
 import starUrl from '../assets/splash/star-four.svg'
 import iconUrl from '../assets/splash/app-icon.png'
 
+// 最长展示时长：即使启动数据仍未就绪也开屏淡出，避免卡在开屏。
+const MAX_VISIBLE_MS = 2200
+// 淡出动画时长，与 .splash 的 transition 保持一致。
+const FADE_MS = 400
+
 const theme = useThemeStore()
+const devices = useDevicesStore()
 const leaving = ref(false)
 const mounted = ref(true)
 
 const isDark = computed(() => theme.isDark)
 
-let leaveTimer = 0
+let maxTimer = 0
 let removeTimer = 0
 
+function leave() {
+  if (leaving.value) {
+    return
+  }
+  leaving.value = true
+  window.clearTimeout(maxTimer)
+  removeTimer = window.setTimeout(() => {
+    mounted.value = false
+  }, FADE_MS)
+}
+
+// 启动就绪（首次设备刷新结束）即收起，未就绪则等到 MAX_VISIBLE_MS。
+watch(
+  () => devices.ready,
+  (ready) => {
+    if (ready) {
+      leave()
+    }
+  },
+  { immediate: true },
+)
+
 onMounted(() => {
-  // 展示 1.55s，淡出 0.4s 后卸载。
-  leaveTimer = window.setTimeout(() => {
-    leaving.value = true
-    removeTimer = window.setTimeout(() => {
-      mounted.value = false
-    }, 400)
-  }, 1550)
+  maxTimer = window.setTimeout(leave, MAX_VISIBLE_MS)
 })
 
 onBeforeUnmount(() => {
-  window.clearTimeout(leaveTimer)
+  window.clearTimeout(maxTimer)
   window.clearTimeout(removeTimer)
 })
 </script>

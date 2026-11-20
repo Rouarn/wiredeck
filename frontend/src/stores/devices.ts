@@ -9,6 +9,8 @@ export const useDevicesStore = defineStore('devices', () => {
   const currentSerial = ref('')
   const error = ref('')
   const loading = ref(false)
+  // 首次 refresh 结束（无论成败）即视为启动就绪，开屏据此决定何时隐藏。
+  const ready = ref(false)
 
   const current = computed(
     () => list.value.find((item) => item.serial === currentSerial.value) ?? null,
@@ -32,6 +34,7 @@ export const useDevicesStore = defineStore('devices', () => {
       error.value = e instanceof Error ? e.message : String(e)
     } finally {
       loading.value = false
+      ready.value = true
     }
   }
 
@@ -49,5 +52,5 @@ export const useDevicesStore = defineStore('devices', () => {
     await refresh()
   }
 
-  return { list, adb, current, currentSerial, error, loading, apply, refresh, select, reconnect }
+  return { list, adb, current, currentSerial, error, loading, ready, apply, refresh, select, reconnect }
 })
